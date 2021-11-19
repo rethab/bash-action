@@ -4,7 +4,7 @@
       "owner": "bash-action",
       "pattern": [
         {
-          "regexp": "^(Error|Warning|Info):\\s(.+),\\sline\\s(\\d+):\\s(.+)$",
+          "regexp": "^(ERROR|WARNING|INFO):\\s(.+),\\sline\\s(\\d+):\\s(.+)$",
           "file": 2,
           "line": 3,
           "severity": 1,
