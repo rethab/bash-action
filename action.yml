@@ -13,10 +13,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: echo "##[add-matcher]${GITHUB_ACTION_PATH}/matcher.json"
+    - run: echo "::add-matcher::${GITHUB_ACTION_PATH}/matcher.json"
       shell: bash
     - name: Run Script
       run: ${GITHUB_ACTION_PATH}/script.sh ${{ inputs.command }} ${{ inputs.who }}
       shell: bash
-    - run: echo "##[remove-matcher]bash-action"
+    - run: echo "::remove-matcher owner=bash-action::"
       shell: bash
