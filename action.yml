@@ -1,0 +1,22 @@
+name: Bash Action
+description: A sample GitHub Action written in Bash
+
+inputs:
+  command:
+    description: The command to run. Either "greet" or "error"
+    required: false
+    default: greet
+  who:
+    description: If the command is greet, the name to greet
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - run: echo '##[add-matcher]$GITHUB_ACTION_PATH/matcher.json'
+      shell: bash
+    - name: Run Script
+      run: $GITHUB_ACTION_PATH/script.sh ${{ inputs.command }} ${{ inputs.who }}
+      shell: bash
+    - run: echo '##[remove-matcher]bash-action'
+      shell: bash
