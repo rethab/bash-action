@@ -3,26 +3,53 @@ name: Verify
 on: push
 
 jobs:
-  verify:
-    name: Checks
+  static_checks:
+    name: Static Checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
+      - name: bash formatting
+        run: docker run -v "$PWD":/mnt -w /mnt mvdan/shfmt -ci -i 2 -l -d -- *.sh
+
       - name: shellcheck
-        run: docker run -v "$PWD":/mnt -w /mnt koalaman/shellcheck -- *.sh
+        run: docker run -v "$PWD":/mnt -w /mnt koalaman/shellcheck -- *.sh test/*.bats
+
+      - name: misc files formatting
+        run: docker run -v "$PWD":/mnt -w /mnt tmknom/prettier --check .
+
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup BATS
+        uses: mig4/setup-bats@v1
+        with:
+          bats-version: 1.5.0
+
+      - name: Run Tests
+        run: bats --trace --print-output-on-failure test/
 
   self_check:
     name: Run this Action
     runs-on: ubuntu-latest
+    needs: [static_checks, tests]
     steps:
       - uses: actions/checkout@v2
-
-      - uses: ./
-        with:
-          command: error
 
       - uses: ./
         with:
           command: greet
           who: world
+
+      - uses: ./
+        id: error_step
+        continue-on-error: true
+        with:
+          command: error
+
+      - name: ensure error command failed
+        if: steps.error_step.outcome == 'success'
+        run: exit 1
