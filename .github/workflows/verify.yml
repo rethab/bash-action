@@ -11,3 +11,18 @@ jobs:
 
       - name: shellcheck
         run: docker run -v "$PWD":/mnt -w /mnt koalaman/shellcheck -- *.sh
+
+  self_check:
+    name: Run this Action
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./
+        with:
+          command: error
+
+      - uses: ./
+        with:
+          command: greet
+          who: world
