@@ -20,9 +20,9 @@ jobs:
 
       - uses: ./
         with:
-          command: error
+          command: greet
+          who: world
 
       - uses: ./
         with:
-          command: greet
-          who: world
+          command: error
