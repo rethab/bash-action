@@ -9,4 +9,5 @@ if [[ $command == "greet" ]]; then
   echo "hello, $who"
 elif [[ $command == "error" ]]; then
   echo "ERROR: script.sh, line 11: this is not good"
+  exit 1
 fi
