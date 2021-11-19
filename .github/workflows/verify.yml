@@ -30,5 +30,11 @@ jobs:
           who: world
 
       - uses: ./
+        continue-on-error: true
         with:
           command: error
+
+      - name: ensure error command failed
+        if: steps.error.outcome == "success"
+        run: exit 1
+
