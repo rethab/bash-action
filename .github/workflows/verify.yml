@@ -9,8 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: bash formatting
+        run: docker run -v "$PWD":/mnt -w /mnt mvdan/shfmt -ci -i 2 -l -d -- *.sh
+
       - name: shellcheck
         run: docker run -v "$PWD":/mnt -w /mnt koalaman/shellcheck -- *.sh
+
+      - name: misc files formatting
+        run: docker run -v "$PWD":/mnt -w /mnt tmknom/prettier --check .
 
   self_check:
     name: Run this Action
