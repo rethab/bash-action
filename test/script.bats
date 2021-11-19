@@ -6,6 +6,7 @@
 }
 
 @test "error: show error and exit with 1" {
-  result=$(./script.sh error)
-  [ "$result" == "hello, linus" ]
+  run ./script.sh error
+  [ "$status" -eq 1 ]
+  [ "$output" = "ERROR: script.sh, line 11: this is not so good" ]
 }
